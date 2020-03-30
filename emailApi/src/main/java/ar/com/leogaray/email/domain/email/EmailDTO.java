@@ -1,8 +1,11 @@
 package ar.com.leogaray.email.domain.email;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class EmailDTO {
+public class EmailDTO implements Serializable {
+    private static final long serialVersionUID = 489799306143301328L;
+
     private Long id;
     private LocalDate date;
     private String from;

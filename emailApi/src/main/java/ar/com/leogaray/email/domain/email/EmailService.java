@@ -1,12 +1,17 @@
 package ar.com.leogaray.email.domain.email;
 
+import ar.com.leogaray.email.common.BusinessException;
 import ar.com.leogaray.email.domain.entity.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -17,7 +22,7 @@ public class EmailService implements IEmailService {
     @Autowired
     private IEmailRepository emailRepository;
     @Autowired
-    private ConnectionEmail connectEmail;
+    private ConnectionMail connectEmail;
 
 
     @Override
@@ -71,4 +76,47 @@ public class EmailService implements IEmailService {
         }
         return emailList;
     }
+
+    @Override
+    public List<EmailDTO> convertMessages(Message[] messages) throws Exception {
+        List<EmailDTO> emailDtoList = new ArrayList<>();
+
+        if (messages.length > 0) {
+            for(Message message : messages){
+                EmailDTO emailDto = new EmailDTO();
+                emailDto.setSubject(message.getSubject());
+
+                Address[] addresses;
+                String from = "";
+                if ((addresses = message.getFrom()) != null) {
+                    for (int j = 0; j < addresses.length; j++)
+                        from += addresses[j].toString();
+                }
+                emailDto.setFrom(from);
+
+                Date sendDate = message.getSentDate();
+                if (sendDate != null) {
+                    LocalDate localDate = sendDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    emailDto.setDate(localDate);
+                }
+                emailDtoList.add(emailDto);
+            }
+            this.closeFolder();
+            this.disconnect();
+        }
+
+        return emailDtoList;
+    }
+
+    @Override
+    public List<EmailDTO> searchAndSave(String pattern) throws Exception {
+        this.connect();
+        Message[] msgs = this.searchMessages(pattern);
+        if (msgs == null)
+            throw new BusinessException("Not result");
+
+        List<EmailDTO> list = this.convertMessages(msgs);
+        return this.saveList(list);
+    }
+
 }

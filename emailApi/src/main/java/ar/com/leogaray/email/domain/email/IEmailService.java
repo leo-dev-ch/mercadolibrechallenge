@@ -20,4 +20,8 @@ public interface IEmailService {
     List<EmailDTO> saveList(List<EmailDTO> emailDtoList);
 
     EmailDTO saveEmail(EmailDTO emailDto);
+
+    List<EmailDTO> convertMessages(Message[] messages) throws Exception;
+
+    List<EmailDTO> searchAndSave(String pattern) throws Exception;
 }
