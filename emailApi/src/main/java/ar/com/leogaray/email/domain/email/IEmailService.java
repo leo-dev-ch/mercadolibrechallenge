@@ -1,6 +1,8 @@
 package ar.com.leogaray.email.domain.email;
 
 
+import ar.com.leogaray.email.domain.user.UserDTO;
+
 import javax.mail.Message;
 import java.util.List;
 
@@ -8,6 +10,8 @@ public interface IEmailService {
 
 
     void connect() throws Exception;
+
+    void connect(UserDTO userDto) throws Exception;
 
     void disconnect() throws Exception;
 
@@ -24,4 +28,6 @@ public interface IEmailService {
     List<EmailDTO> convertMessages(Message[] messages) throws Exception;
 
     List<EmailDTO> searchAndSave(String pattern) throws Exception;
+
+    List<EmailDTO> searchAndSaveByUser(UserDTO userDto, String pattern) throws Exception;
 }

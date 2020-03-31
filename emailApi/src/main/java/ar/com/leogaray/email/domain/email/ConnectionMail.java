@@ -1,6 +1,7 @@
 package ar.com.leogaray.email.domain.email;
 
 import ar.com.leogaray.email.common.BusinessException;
+import ar.com.leogaray.email.domain.user.UserDTO;
 import com.sun.mail.imap.IMAPSSLStore;
 import com.sun.mail.pop3.POP3SSLStore;
 import net.bytebuddy.implementation.bytecode.Throw;
@@ -58,19 +59,38 @@ public class ConnectionMail {
         this.password = password;
     }
 
-    public void connect() throws Exception {
+    private Properties getProperties() {
+        String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
+        Properties props = new Properties();
 
+        props.setProperty("mail.imap.socketFactory.class", this.socketFactory);
+        props.setProperty("mail.imap.socketFactory.fallback", this.socketFactoryFallback);
+        props.setProperty("mail.imap.port", String.valueOf(this.port));
+        props.setProperty("mail.imap.socketFactory.port", String.valueOf(port));
+        return props;
+    }
 
+    public void connect(UserDTO userDto) throws Exception {
         try {
-            String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
+            Properties props = this.getProperties();
+            URLName url = new URLName(this.protocol, this.host, this.port, "", userDto.getUsername(), userDto.getPassword());
 
-            Properties props = new Properties();
+            this.session = Session.getInstance(props, null);
+            if (this.protocol.equals("imap"))
+                this.store = new IMAPSSLStore(this.session, url);
+            else if (this.protocol.equals("pop3"))
+                this.store = new POP3SSLStore(this.session, url);
 
-            props.setProperty("mail.imap.socketFactory.class", this.socketFactory);
-            props.setProperty("mail.imap.socketFactory.fallback", this.socketFactoryFallback);
-            props.setProperty("mail.imap.port", String.valueOf(this.port));
-            props.setProperty("mail.imap.socketFactory.port", String.valueOf(port));
+            this.store.connect();
+        } catch (Exception exception) {
+            logger.error(exception.getMessage());
+            throw new BusinessException("Ups..!!An error has occurred. " + exception.getMessage());
+        }
+    }
 
+    public void connect() throws Exception {
+        try {
+            Properties props = this.getProperties();
             URLName url = new URLName(this.protocol, this.host, this.port, "", this.username, this.password);
 
             this.session = Session.getInstance(props, null);
@@ -82,7 +102,7 @@ public class ConnectionMail {
             this.store.connect();
         } catch (Exception exception) {
             logger.error(exception.getMessage());
-            throw new BusinessException("Ups..!!An error has occurred. "+exception.getMessage());
+            throw new BusinessException("Ups..!!An error has occurred. " + exception.getMessage());
         }
     }
 

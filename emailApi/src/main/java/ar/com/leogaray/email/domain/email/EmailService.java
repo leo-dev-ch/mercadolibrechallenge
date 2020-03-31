@@ -2,6 +2,7 @@ package ar.com.leogaray.email.domain.email;
 
 import ar.com.leogaray.email.common.BusinessException;
 import ar.com.leogaray.email.domain.entity.Email;
+import ar.com.leogaray.email.domain.user.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,16 @@ public class EmailService implements IEmailService {
     public void connect() throws Exception {
         this.connectEmail.connect();
     }
+
+    /**
+     * @param userDto
+     * @throws Exception
+     */
+    @Override
+    public void connect(UserDTO userDto) throws Exception {
+        this.connectEmail.connect(userDto);
+    }
+
 
     @Override
     public void disconnect() throws Exception {
@@ -118,5 +129,21 @@ public class EmailService implements IEmailService {
         List<EmailDTO> list = this.convertMessages(msgs);
         return this.saveList(list);
     }
+    @Override
+    public List<EmailDTO> searchAndSaveByUser(UserDTO userDto,String pattern) throws Exception {
+        if (!this.isValidUsername(userDto.getUsername()))
+            throw new BusinessException("Invalid email");
 
+        this.connect(userDto);
+        Message[] msgs = this.searchMessages(pattern);
+        if (msgs == null)
+            throw new BusinessException("Not result");
+
+        List<EmailDTO> list = this.convertMessages(msgs);
+        return this.saveList(list);
+    }
+    private boolean isValidUsername(String username) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return username.matches(regex);
+    }
 }

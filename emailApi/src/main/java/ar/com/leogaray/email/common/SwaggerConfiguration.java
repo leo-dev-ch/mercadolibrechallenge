@@ -23,9 +23,7 @@ public class SwaggerConfiguration {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                //.apis(RequestHandlerSelectors.basePackage("ar.com.leogaray.rest"))
                 .apis(RequestHandlerSelectors.any())
-                // .paths(PathSelectors.any())
                 .paths(Predicates.not(PathSelectors.regex("/error.*")))
                 .build();
     }
