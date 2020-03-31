@@ -1,15 +1,17 @@
 version: '3.1'
 
 services:
-#  MercadoLibreChallente:
-#    build: .
-#    container_name: MercadoLibreChallente
-#    ports:
-#      - 8080:8080
-#  networks:
-#      - postgres-network
-  postgres-compose:
+  mlchallenteaaaa:
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - dbpostgres
+    networks:
+      - postgres-network
+  dbpostgres:
     image: postgres
+    container_name: dbpostgres
     environment:
       POSTGRES_DB: mercadolibre_challenge
       POSTGRES_USER: "postgres"
@@ -29,10 +31,9 @@ services:
     ports:
       - "81:80"
     depends_on:
-      - postgres-compose
+      - dbpostgres
     networks:
       - postgres-network
-
 networks: 
   postgres-network:
     driver: bridge
