@@ -9,8 +9,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.
-                 authorizeRequests()
-               .antMatchers("/**").permitAll();
+        http
+                //https://spring.io/blog/2013/08/21/spring-security-3-2-0-rc1-highlights-csrf-protection/
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/**").permitAll();
     }
 }
