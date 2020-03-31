@@ -12,10 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Properties;
 import javax.mail.*;
-import javax.mail.search.AndTerm;
-import javax.mail.search.BodyTerm;
-import javax.mail.search.SearchTerm;
-import javax.mail.search.SubjectTerm;
+import javax.mail.search.*;
 
 @Component
 public class ConnectionMail {
@@ -130,7 +127,8 @@ public class ConnectionMail {
     }
 
     public Message[] searchMessages(String pattern) throws Exception {
-        SearchTerm searchTerm = new AndTerm(new SubjectTerm(pattern), new BodyTerm(pattern));
+        /*OrTerm use OR Contidional*/
+        SearchTerm searchTerm = new OrTerm(new SearchTerm[] { new BodyTerm(pattern),new SubjectTerm(pattern) });
         Message[] messages = this.folder.search(searchTerm);
         return messages;
     }

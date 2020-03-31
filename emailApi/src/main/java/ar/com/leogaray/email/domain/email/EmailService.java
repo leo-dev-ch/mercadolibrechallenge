@@ -66,6 +66,7 @@ public class EmailService implements IEmailService {
         Message[] messages = this.connectEmail.getAllMessages();
         return messages;
     }
+
     public void closeFolder() throws MessagingException {
         this.connectEmail.closeFolder();
     }
@@ -93,9 +94,12 @@ public class EmailService implements IEmailService {
         List<EmailDTO> emailDtoList = new ArrayList<>();
 
         if (messages.length > 0) {
-            for(Message message : messages){
+            for (Message message : messages) {
                 EmailDTO emailDto = new EmailDTO();
-                emailDto.setSubject(message.getSubject());
+                if (message.getSubject() == null)
+                    emailDto.setSubject(EMessage.NOTSUBJET.getName());
+                else
+                    emailDto.setSubject(message.getSubject());
 
                 Address[] addresses;
                 String from = "";
@@ -129,8 +133,9 @@ public class EmailService implements IEmailService {
         List<EmailDTO> list = this.convertMessages(msgs);
         return this.saveList(list);
     }
+
     @Override
-    public List<EmailDTO> searchAndSaveByUser(UserDTO userDto,String pattern) throws Exception {
+    public List<EmailDTO> searchAndSaveByUser(UserDTO userDto, String pattern) throws Exception {
         if (!this.isValidUsername(userDto.getUsername()))
             throw new BusinessException("Invalid email");
 
@@ -142,6 +147,7 @@ public class EmailService implements IEmailService {
         List<EmailDTO> list = this.convertMessages(msgs);
         return this.saveList(list);
     }
+
     private boolean isValidUsername(String username) {
         String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
         return username.matches(regex);

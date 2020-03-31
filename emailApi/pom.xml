@@ -12,6 +12,7 @@
 	<artifactId>email</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>email</name>
+	<packaging>jar</packaging>
 	<description>Demo project for email search</description>
 
 	<properties>
