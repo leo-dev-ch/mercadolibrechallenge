@@ -94,6 +94,6 @@ Para acceder a la base de datos, puede hacerlo mediante PgAdmin4, a través de l
     Object -> Create -> Server
     
     Name= Postgres
-    host = postgres-compose
+    host = dbpostgres
     Username= postgres
     Password= Postgres2020!
