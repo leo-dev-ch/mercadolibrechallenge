@@ -34,6 +34,10 @@ Para  desplegar el proyecto, se deben ejecutar desde la terminal o consola de wi
     $ cd proyecto
     $ docker-compose up -d
 
+De ser necesario hay que generar el archivo .jar, para ello se debe ejecutar el siguiente comando, ubicado en la raiz del proyecto.
+    
+    $ mvn package -Dmaven.test.skip=true
+    $ docker-compose up -d
 
 ##Trabajando
 El proyecto expone 2 API REST, que permiten ejecutar las funcionalidades de los requerimientos. Las api se pueden consumir mediante CURL o utilizando  Swagger UI. 
