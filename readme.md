@@ -8,8 +8,9 @@ La Aplicación Permite:
 * Leer y  Buscar todos los correos electrónicos que contengan en el asunto y/o cuerpo, la palabra; **DevOps**.
 * Almacenar en una base de datos  los siguientes: campos: fecha, from, subject.
 
-##Prerequisitos
+## Prerequisitos
 Para ejecutar Ejecutar la aplicacion es necesario tener los siguientes requerimientos:
+
  * Docker 19.x.x 
  * Docker-compose V1.24.x
  * Git
@@ -28,7 +29,7 @@ En este archivo modifique las propiedades del correo electrónico y reemplace co
     mail.username = XXXXX@gmail.com
     mail.password = XXXXXXXX (contraseña de Aplicacion)
     
-##Ejecución del proyecto
+## Ejecución del proyecto
 Para  desplegar el proyecto, se deben ejecutar desde la terminal o consola de windows los siguientes comandos
 
     $ cd proyecto
@@ -39,12 +40,13 @@ De ser necesario hay que generar el archivo .jar, para ello se debe ejecutar el 
     $ mvn package -Dmaven.test.skip=true
     $ docker-compose up -d
 
-##Trabajando
+## Trabajando
 El proyecto expone 2 API REST, que permiten ejecutar las funcionalidades de los requerimientos. Las api se pueden consumir mediante CURL o utilizando  Swagger UI. 
 
 Al Swagger se accede desde la siguiente url: http://localhost:8080/swagger-ui.html.
 
-###Apis
+### Apis
+
 `/api/mail/searchDevOps`
 Permite acceder al correo electrónico por defecto, buscar entre los email, todos aquellos que contengan en el asunto y/o cuerpo, la palabra **DevOps**  y almacenarlos en la base de Datos. Finalmente retorna una lista con todos los correos que se recuperaron y almacenaron.
 
@@ -80,17 +82,18 @@ Permite acceder al correo electrónico por defecto, buscar entre los email, todo
        }
      ]
 
-#Base de Datos
+## Base de Datos
+
 Al desplegar el proyecto, se crean los contendores de PostgreSql y PgAdmin4.
 En postgreSql se crea automáticamente la Base de Dato `mercadolibre_challenge` y la tabla `public.messages`.
 
 Para acceder a la base de datos, puede hacerlo mediante PgAdmin4, a través de la siguiente URL http://localhost:81/browser/
 
-######Datos de Acceso
+###### Datos de Acceso
     Email= leo@leo.com
     Password= PgAdmin2020!
 
-######Agregar Server
+###### Agregar Server
     Object -> Create -> Server
     
     Name= Postgres
