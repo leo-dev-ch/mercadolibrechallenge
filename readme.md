@@ -19,6 +19,12 @@ Para ejecutar Ejecutar la aplicacion es necesario tener los siguientes requerimi
     * **Verificacion de dos pasos** Documentacion: https://support.google.com/accounts/answer/185839
     * **Contraseña de aplicaciones** Documentacion:  https://support.google.com/mail/answer/185833?hl=es-419
 
+# Proyecto
+Al momento de realizar el Deploy del proyecto se van a encontrar con los siguientes servicios
+* API Rest
+* PostgreSql
+* PgAdmin 4
+
 ## Descarga y Configuración del proyecto.
 Descargar este proyecto como zip o clonar el proyecto. En caso de descargar como Zip extraer los archivos dentro de una carpeta.
 

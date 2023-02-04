@@ -2,6 +2,7 @@ package ar.com.leogaray.email.domain.email;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class EmailDTO implements Serializable {
     private static final long serialVersionUID = 489799306143301328L;
@@ -44,5 +45,22 @@ public class EmailDTO implements Serializable {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EmailDTO emailDTO = (EmailDTO) o;
+        return Objects.equals(id, emailDTO.id) &&
+                Objects.equals(date, emailDTO.date) &&
+                Objects.equals(from, emailDTO.from) &&
+                Objects.equals(subject, emailDTO.subject);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, date, from, subject);
     }
 }

@@ -27,4 +27,5 @@ public class SwaggerConfiguration {
                 .paths(Predicates.not(PathSelectors.regex("/error.*")))
                 .build();
     }
+
 }

@@ -18,6 +18,7 @@ public class Email {
     private String subject;
 
     public Email() {
+        System.out.println();
     }
 
     public Long getId() {
